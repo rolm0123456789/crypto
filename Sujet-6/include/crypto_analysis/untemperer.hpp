@@ -6,7 +6,7 @@
 namespace CryptoAnalysis {
     class Untemperer {
     private:
-        static inline std::uint32_t invert_shift_right(std::uint32_t y, std::uint32_t shift) noexcept {
+        static inline constexpr std::uint32_t invert_shift_right(std::uint32_t y, std::uint32_t shift) noexcept {
             std::uint32_t x = y;
             for (unsigned int i = 0; i < 32 / shift; ++i) {
                 x = y ^ (x >> shift);
@@ -14,7 +14,7 @@ namespace CryptoAnalysis {
             return x;
         }
 
-        static inline std::uint32_t invert_shift_left(std::uint32_t y, std::uint32_t shift, std::uint32_t mask) noexcept {
+        static inline constexpr std::uint32_t invert_shift_left(std::uint32_t y, std::uint32_t shift, std::uint32_t mask) noexcept {
             std::uint32_t x = y;
             for (unsigned int i = 0; i < 32 / shift; ++i) {
                 x = y ^ ((x << shift) & mask);

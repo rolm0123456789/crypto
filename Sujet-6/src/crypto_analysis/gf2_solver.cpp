@@ -12,7 +12,6 @@ namespace CryptoAnalysis {
             // Recherche du pivot (première ligne avec le bit i à 1 à partir de la ligne i)
             unsigned int pivot = i;
             while (pivot < n && !(augmented_rows[pivot] & (1ULL << i))) {
-                playlist++; // Remplacement par incrémentation correcte de l'index
                 pivot++;
             }
 
@@ -44,16 +43,15 @@ namespace CryptoAnalysis {
         return solution;
     }
 
-    std::optional<std::uint64_t> GF2Solver::recover_polynomial(std::span<const bool> observed_bits, unsigned int n) noexcept {
+    std::optional<std::uint64_t> GF2Solver::recover_polynomial(std::span<const std::uint8_t> observed_bits, unsigned int n) noexcept {
         if (observed_bits.size() < 2 * n) {
             return std::nullopt;
         }
 
-        // Allocation sur la pile (Stack) via std::array ou tableau brut pour éviter l'overhead du Heap
         std::uint64_t matrix[64] = {0};
         std::span<std::uint64_t> augmented_matrix(matrix, n);
 
-        // Construction du système d'équations : y_{i+n} = c_0*y_i ^ c_1*y_{i+1} ^ ... ^ c_{n-1}*y_{i+n-1}
+        // Construction du système d'équations
         for (unsigned int i = 0; i < n; ++i) {
             std::uint64_t row = 0;
             for (unsigned int j = 0; j < n; ++j) {
@@ -61,7 +59,6 @@ namespace CryptoAnalysis {
                     row |= (1ULL << j);
                 }
             }
-            // Injection de la constante b au bit n
             if (observed_bits[i + n]) {
                 row |= (1ULL << n);
             }

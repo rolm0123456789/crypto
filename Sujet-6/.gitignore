@@ -1,0 +1,35 @@
+# Prémisses de build (Dossier cible recommandé)
+build/
+bin/
+lib/
+
+# Fichiers générés par CMake (au cas où un build in-source est exécuté)
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+
+# Objets et exécutables compilés
+*.o
+*.a
+*.so
+*.out
+
+# Artifacts spécifiques aux exécutables du projet
+lfsr_poc
+mt19937_poc
+session_server
+session_attacker
+
+# Fichiers de configuration IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Fichiers systèmes ou de logs
+*.log
+.DS_Store
