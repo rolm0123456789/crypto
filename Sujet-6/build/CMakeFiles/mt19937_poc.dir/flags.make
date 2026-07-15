@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/romain/Bureau/Esgi/crypto/Sujet-6/include
 
-CXX_FLAGS = -std=gnu++20 -O3 -march=native -Wall -Wextra -Wpedantic
+CXX_FLAGS = -O3 -DNDEBUG -std=gnu++20 -O3 -march=native -Wall -Wextra -Wpedantic
 

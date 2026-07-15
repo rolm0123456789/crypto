@@ -25,7 +25,7 @@ int main() {
         intercepted_bits.push_back(static_cast<std::uint8_t>(target_lfsr.next_bit()));
     }
 
-    std::cout << "[+] Interception de 2n (" << INTERCEPTION_SIZE << ") bits effectuée.\n";
+    std::cout << std::dec << "[+] Interception de 2n (" << INTERCEPTION_SIZE << ") bits effectuée.\n";
 
     std::cout << "[*] Lancement de l'attaque par élimination de Gauss-Jordan sur GF(2)...\n";
     auto recovered_poly_opt = CryptoAnalysis::GF2Solver::recover_polynomial(intercepted_bits, DEGREE);
@@ -43,16 +43,22 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    std::uint64_t recovered_state = 0;
+    // Les n premiers bits de sortie correspondent à l'état initial du registre (y_i = S_0[i])
+    std::uint64_t recovered_initial_state = 0;
     for (unsigned int i = 0; i < DEGREE; ++i) {
-        if (intercepted_bits[(INTERCEPTION_SIZE - DEGREE) + i]) {
-            recovered_state |= (1ULL << i);
+        if (intercepted_bits[i]) {
+            recovered_initial_state |= (1ULL << i);
         }
     }
 
-    std::cout << "[+] État interne synchronisé détecté : 0x" << std::hex << recovered_state << "\n\n";
+    std::cout << "[+] État initial reconstruit : 0x" << std::hex << recovered_initial_state << "\n";
 
-    CryptoCore::LFSR clone_lfsr(recovered_state, recovered_poly, DEGREE);
+    CryptoCore::LFSR clone_lfsr(recovered_initial_state, recovered_poly, DEGREE);
+    for (std::size_t i = 0; i < INTERCEPTION_SIZE; ++i) {
+        (void)clone_lfsr.next_bit();
+    }
+
+    std::cout << "[+] État synchronisé après 2n cycles : 0x" << clone_lfsr.current_state() << "\n\n";
 
     std::cout << "[*] Comparaison et prédiction sur les 100 prochains bits :\n";
     std::cout << "--------------------------------------------------------\n";

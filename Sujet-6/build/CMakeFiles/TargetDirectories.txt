@@ -1,4 +1,6 @@
 /home/romain/Bureau/Esgi/crypto/Sujet-6/build/CMakeFiles/lfsr_poc.dir
 /home/romain/Bureau/Esgi/crypto/Sujet-6/build/CMakeFiles/mt19937_poc.dir
+/home/romain/Bureau/Esgi/crypto/Sujet-6/build/CMakeFiles/session_server.dir
+/home/romain/Bureau/Esgi/crypto/Sujet-6/build/CMakeFiles/session_attacker.dir
 /home/romain/Bureau/Esgi/crypto/Sujet-6/build/CMakeFiles/edit_cache.dir
 /home/romain/Bureau/Esgi/crypto/Sujet-6/build/CMakeFiles/rebuild_cache.dir
