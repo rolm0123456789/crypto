@@ -17,6 +17,7 @@ add_executable(lfsr_poc apps/lfsr_poc_app.cpp src/crypto_analysis/gf2_solver.cpp
 # Partie 2 : Mersenne Twister Local
 add_executable(mt19937_poc apps/mt19937_poc_app.cpp)
 
-# Partie 3 : Scénario d'Exploitation Réseau (Serveur & Attaquant)
+# Partie 3 : Scénario d'Exploitation Réseau (Serveur, Victime & Attaquant)
 add_executable(session_server apps/session_hijack/server.cpp ${NETWORK_SOURCES})
+add_executable(session_victim  apps/session_hijack/victim.cpp ${NETWORK_SOURCES})
 add_executable(session_attacker apps/session_hijack/attacker.cpp ${NETWORK_SOURCES})

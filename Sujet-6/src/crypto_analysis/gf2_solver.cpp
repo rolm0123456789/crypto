@@ -1,4 +1,5 @@
 #include "crypto_analysis/gf2_solver.hpp"
+
 #include <utility>
 
 namespace CryptoAnalysis {
@@ -8,24 +9,23 @@ namespace CryptoAnalysis {
             return std::nullopt;
         }
 
+        // Élimination de Gauss-Jordan : chaque colonne i devient pivot.
         for (unsigned int i = 0; i < n; ++i) {
-            // Recherche du pivot (première ligne avec le bit i à 1 à partir de la ligne i)
+            // Recherche d'une ligne avec un 1 en position i (pivot).
             unsigned int pivot = i;
             while (pivot < n && !(augmented_rows[pivot] & (1ULL << i))) {
                 pivot++;
             }
 
-            // Si aucun pivot n'est trouvé, la matrice est singulière (pas de solution unique)
             if (pivot == n) {
-                return std::nullopt;
+                return std::nullopt; // Matrice singulière : pas de solution unique.
             }
 
-            // Échange de la ligne courante avec la ligne pivot si nécessaire
             if (pivot != i) {
                 std::swap(augmented_rows[i], augmented_rows[pivot]);
             }
 
-            // Élimination des coefficients dans toutes les autres lignes
+            // Annulation des autres 1 de la colonne i (XOR = soustraction dans GF(2)).
             for (unsigned int j = 0; j < n; ++j) {
                 if (j != i && (augmented_rows[j] & (1ULL << i))) {
                     augmented_rows[j] ^= augmented_rows[i];
@@ -33,10 +33,10 @@ namespace CryptoAnalysis {
             }
         }
 
-        // Extraction du vecteur solution depuis la colonne b (située au bit n)
+        // Lecture de la solution dans la colonne b (bit n de chaque ligne).
         std::uint64_t solution = 0;
         for (unsigned int i = 0; i < n; ++i) {
-            std::uint64_t b_bit = (augmented_rows[i] >> n) & 1ULL;
+            const std::uint64_t b_bit = (augmented_rows[i] >> n) & 1ULL;
             solution |= (b_bit << i);
         }
 
@@ -48,10 +48,11 @@ namespace CryptoAnalysis {
             return std::nullopt;
         }
 
+        // Construction de la matrice augmentée [A | b] à partir des bits observés.
+        // Ligne i : (y_i, y_{i+1}, ..., y_{i+n-1}) · c = y_{i+n}
         std::uint64_t matrix[64] = {0};
         std::span<std::uint64_t> augmented_matrix(matrix, n);
 
-        // Construction du système d'équations
         for (unsigned int i = 0; i < n; ++i) {
             std::uint64_t row = 0;
             for (unsigned int j = 0; j < n; ++j) {
@@ -60,11 +61,12 @@ namespace CryptoAnalysis {
                 }
             }
             if (observed_bits[i + n]) {
-                row |= (1ULL << n);
+                row |= (1ULL << n); // Colonne b : bit cible y_{i+n}
             }
             augmented_matrix[i] = row;
         }
 
         return solve(augmented_matrix, n);
     }
-}
+
+} // namespace CryptoAnalysis
