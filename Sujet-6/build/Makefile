@@ -142,6 +142,32 @@ mt19937_poc/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mt19937_poc.dir/build.make CMakeFiles/mt19937_poc.dir/build
 .PHONY : mt19937_poc/fast
 
+#=============================================================================
+# Target rules for targets named session_server
+
+# Build rule for target.
+session_server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 session_server
+.PHONY : session_server
+
+# fast build rule for target.
+session_server/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_server.dir/build.make CMakeFiles/session_server.dir/build
+.PHONY : session_server/fast
+
+#=============================================================================
+# Target rules for targets named session_attacker
+
+# Build rule for target.
+session_attacker: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 session_attacker
+.PHONY : session_attacker
+
+# fast build rule for target.
+session_attacker/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_attacker.dir/build.make CMakeFiles/session_attacker.dir/build
+.PHONY : session_attacker/fast
+
 apps/lfsr_poc_app.o: apps/lfsr_poc_app.cpp.o
 .PHONY : apps/lfsr_poc_app.o
 
@@ -190,6 +216,54 @@ apps/mt19937_poc_app.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mt19937_poc.dir/build.make CMakeFiles/mt19937_poc.dir/apps/mt19937_poc_app.cpp.s
 .PHONY : apps/mt19937_poc_app.cpp.s
 
+apps/session_hijack/attacker.o: apps/session_hijack/attacker.cpp.o
+.PHONY : apps/session_hijack/attacker.o
+
+# target to build an object file
+apps/session_hijack/attacker.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_attacker.dir/build.make CMakeFiles/session_attacker.dir/apps/session_hijack/attacker.cpp.o
+.PHONY : apps/session_hijack/attacker.cpp.o
+
+apps/session_hijack/attacker.i: apps/session_hijack/attacker.cpp.i
+.PHONY : apps/session_hijack/attacker.i
+
+# target to preprocess a source file
+apps/session_hijack/attacker.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_attacker.dir/build.make CMakeFiles/session_attacker.dir/apps/session_hijack/attacker.cpp.i
+.PHONY : apps/session_hijack/attacker.cpp.i
+
+apps/session_hijack/attacker.s: apps/session_hijack/attacker.cpp.s
+.PHONY : apps/session_hijack/attacker.s
+
+# target to generate assembly for a file
+apps/session_hijack/attacker.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_attacker.dir/build.make CMakeFiles/session_attacker.dir/apps/session_hijack/attacker.cpp.s
+.PHONY : apps/session_hijack/attacker.cpp.s
+
+apps/session_hijack/server.o: apps/session_hijack/server.cpp.o
+.PHONY : apps/session_hijack/server.o
+
+# target to build an object file
+apps/session_hijack/server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_server.dir/build.make CMakeFiles/session_server.dir/apps/session_hijack/server.cpp.o
+.PHONY : apps/session_hijack/server.cpp.o
+
+apps/session_hijack/server.i: apps/session_hijack/server.cpp.i
+.PHONY : apps/session_hijack/server.i
+
+# target to preprocess a source file
+apps/session_hijack/server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_server.dir/build.make CMakeFiles/session_server.dir/apps/session_hijack/server.cpp.i
+.PHONY : apps/session_hijack/server.cpp.i
+
+apps/session_hijack/server.s: apps/session_hijack/server.cpp.s
+.PHONY : apps/session_hijack/server.s
+
+# target to generate assembly for a file
+apps/session_hijack/server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_server.dir/build.make CMakeFiles/session_server.dir/apps/session_hijack/server.cpp.s
+.PHONY : apps/session_hijack/server.cpp.s
+
 src/crypto_analysis/gf2_solver.o: src/crypto_analysis/gf2_solver.cpp.o
 .PHONY : src/crypto_analysis/gf2_solver.o
 
@@ -214,6 +288,33 @@ src/crypto_analysis/gf2_solver.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/lfsr_poc.dir/build.make CMakeFiles/lfsr_poc.dir/src/crypto_analysis/gf2_solver.cpp.s
 .PHONY : src/crypto_analysis/gf2_solver.cpp.s
 
+src/network/socket_raii.o: src/network/socket_raii.cpp.o
+.PHONY : src/network/socket_raii.o
+
+# target to build an object file
+src/network/socket_raii.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_server.dir/build.make CMakeFiles/session_server.dir/src/network/socket_raii.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_attacker.dir/build.make CMakeFiles/session_attacker.dir/src/network/socket_raii.cpp.o
+.PHONY : src/network/socket_raii.cpp.o
+
+src/network/socket_raii.i: src/network/socket_raii.cpp.i
+.PHONY : src/network/socket_raii.i
+
+# target to preprocess a source file
+src/network/socket_raii.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_server.dir/build.make CMakeFiles/session_server.dir/src/network/socket_raii.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_attacker.dir/build.make CMakeFiles/session_attacker.dir/src/network/socket_raii.cpp.i
+.PHONY : src/network/socket_raii.cpp.i
+
+src/network/socket_raii.s: src/network/socket_raii.cpp.s
+.PHONY : src/network/socket_raii.s
+
+# target to generate assembly for a file
+src/network/socket_raii.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_server.dir/build.make CMakeFiles/session_server.dir/src/network/socket_raii.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/session_attacker.dir/build.make CMakeFiles/session_attacker.dir/src/network/socket_raii.cpp.s
+.PHONY : src/network/socket_raii.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -224,15 +325,26 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... lfsr_poc"
 	@echo "... mt19937_poc"
+	@echo "... session_attacker"
+	@echo "... session_server"
 	@echo "... apps/lfsr_poc_app.o"
 	@echo "... apps/lfsr_poc_app.i"
 	@echo "... apps/lfsr_poc_app.s"
 	@echo "... apps/mt19937_poc_app.o"
 	@echo "... apps/mt19937_poc_app.i"
 	@echo "... apps/mt19937_poc_app.s"
+	@echo "... apps/session_hijack/attacker.o"
+	@echo "... apps/session_hijack/attacker.i"
+	@echo "... apps/session_hijack/attacker.s"
+	@echo "... apps/session_hijack/server.o"
+	@echo "... apps/session_hijack/server.i"
+	@echo "... apps/session_hijack/server.s"
 	@echo "... src/crypto_analysis/gf2_solver.o"
 	@echo "... src/crypto_analysis/gf2_solver.i"
 	@echo "... src/crypto_analysis/gf2_solver.s"
+	@echo "... src/network/socket_raii.o"
+	@echo "... src/network/socket_raii.i"
+	@echo "... src/network/socket_raii.s"
 .PHONY : help
 
 

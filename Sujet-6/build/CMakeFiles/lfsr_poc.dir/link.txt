@@ -1,1 +1,1 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/lfsr_poc.dir/link.d CMakeFiles/lfsr_poc.dir/apps/lfsr_poc_app.cpp.o CMakeFiles/lfsr_poc.dir/src/crypto_analysis/gf2_solver.cpp.o -o lfsr_poc
+/usr/bin/c++ -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/lfsr_poc.dir/link.d CMakeFiles/lfsr_poc.dir/apps/lfsr_poc_app.cpp.o CMakeFiles/lfsr_poc.dir/src/crypto_analysis/gf2_solver.cpp.o -o lfsr_poc
