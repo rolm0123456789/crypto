@@ -128,19 +128,27 @@ $$y_{t+n} = \sum_{i=0}^{n-1} c_i \cdot y_{t+i} \pmod 2$$
 
 Où les coefficients $c_i \in \{0, 1\}$ représentent la présence ou l'absence d'une connexion sur le polynôme de rétroaction. Si un attaquant observe $2n$ bits consécutifs de la suite ($y_0, y_1, \dots, y_{2n-1}$), il peut poser un système de $n$ équations linéaires indépendantes à $n$ inconnues :
 
-$$\begin{pmatrix}
-y_0 & y_1 & \dots & y_{n-1} \\\\
-y_1 & y_2 & \dots & y_{n} \\\\
-\vdots & \vdots & \ddots & \vdots \\\\
+$$
+\begin{pmatrix}
+y_0 & y_1 & \dots & y_{n-1} \\
+y_1 & y_2 & \dots & y_{n} \\
+\vdots & \vdots & \ddots & \vdots \\
 y_{n-1} & y_n & \dots & y_{2n-2}
 \end{pmatrix}
 \begin{pmatrix}
-c_0 \\\\ c_1 \\\\ \vdots \\\\ c_{n-1}
+c_0 \\
+c_1 \\
+\vdots \\
+c_{n-1}
 \end{pmatrix}
 =
 \begin{pmatrix}
-y_n \\\\ y_{n+1} \\\\ \vdots \\\\ y_{2n-1}
-\end{pmatrix}$$
+y_n \\
+y_{n+1} \\
+\vdots \\
+y_{2n-1}
+\end{pmatrix}
+$$
 
 Ce système opère sur le corps fini $GF(2)$, ce qui implique que l'addition matricielle correspond à l'opérateur logique `XOR` ($\oplus$) et la multiplication à l'opérateur `AND` ($\wedge$). La résolution par élimination de Gauss-Jordan permet d'isoler de manière unique le vecteur des coefficients $c_i$, reconstruisant ainsi parfaitement le polynôme de rétroaction.
 
