@@ -33,34 +33,28 @@ Le projet est développé en **C++20** standard sans aucune dépendance externe 
 
 ## 3. Instructions d'Installation et de Compilation
 
+Le projet utilise **Docker** pour compiler statiquement les cibles et les exécuter dans des conteneurs isolés et ultra-légers `scratch`, garantissant une compatibilité totale sans dépendances systèmes (Linux, Windows, macOS).
+
 ### Prérequis
+* **Docker** et **Docker Desktop** installés et actifs.
 
-* Un compilateur supportant le standard **C++20** (GCC $\ge$ 11 ou Clang $\ge$ 13)
-* **CMake** (version minimale 3.20)
-* Un environnement de build compatible POSIX (Linux, Arch Linux)
-
-### Processus de Build
-
+### Compilation des images Docker
 ```bash
-# 1. Création du répertoire de build
-mkdir build && cd build
-
-# 2. Configuration CMake avec optimisations de niveau 3
-cmake -DCMAKE_BUILD_TYPE=Release ..
-
-# 3. Compilation globale du projet
-make
+# Compiler les différentes cibles dans des conteneurs scratch distincts
+docker build --target lfsr_poc -t lfsr_poc .
+docker build --target mt19937_poc -t mt19937_poc .
+docker build --target session_server -t session_server .
+docker build --target session_attacker -t session_attacker .
 ```
 
-Cinq binaires sont générés dans le répertoire `build/` :
+Les conteneurs générés et leurs rôles correspondants :
 
-| Binaire | Rôle |
+| Conteneur | Rôle |
 |---|---|
 | `lfsr_poc` | Partie 1 — Attaque algébrique sur LFSR |
 | `mt19937_poc` | Partie 2 — Clonage de MT19937 |
 | `session_server` | Partie 3 — Serveur de tokens vulnérable |
-| `session_victim` | Partie 3 — Client victime (Alice) |
-| `session_attacker` | Partie 3 — Client attaquant (Bob) |
+| `session_attacker` | Partie 3 — Client attaquant (Bob) et victime (Alice) intégrée |
 
 ---
 
@@ -68,18 +62,18 @@ Cinq binaires sont générés dans le répertoire `build/` :
 
 ### Partie 1 : Validation du cassage algébrique du LFSR
 
-Le binaire simule la capture de $2n$ bits (64 bits) d'un LFSR de degré 32, résout le système sur $GF(2)$ pour retrouver le polynôme secret et l'état interne, puis affiche la concordance des 100 bits suivants.
+Le programme simule la capture de $2n$ bits (64 bits) d'un LFSR de degré 32, résout le système sur $GF(2)$ pour retrouver le polynôme secret et l'état interne, puis affiche la concordance des 100 bits suivants.
 
 ```bash
-./lfsr_poc
+docker run --rm lfsr_poc
 ```
 
 ### Partie 2 : Validation du clonage de MT19937
 
-Le binaire intercepte 624 sorties consécutives de 32 bits, applique l'inversion du masquage bit-à-bit, synchronise un générateur local et prédit avec exactitude les 100 valeurs suivantes du flux.
+Le programme intercepte 624 sorties consécutives de 32 bits, applique l'inversion du masquage bit-à-bit, synchronise un générateur local et prédit avec exactitude les 100 valeurs suivantes du flux.
 
 ```bash
-./mt19937_poc
+docker run --rm mt19937_poc
 ```
 
 ### Partie 3 : Scénario réel d'exploitation réseau (Session Hijacking)
@@ -91,15 +85,23 @@ Ce scénario met en jeu **deux utilisateurs distincts** :
 
 Le serveur utilise un **MT19937 global partagé** : chaque token émis par n'importe quel client consomme une sortie du même générateur. C'est cette propriété qui rend l'attaque possible.
 
+#### Protocole d'exécution et de validation :
 ```bash
-# Terminal 1 : Serveur de session vulnérable
-./session_server
+# 1. Créer le volume partagé pour échanger les fichiers de jetons
+docker volume create poc_tmp
 
-# Terminal 2 : Alice simule son activité normale (600 tokens interceptés par Bob)
-./session_victim setup
+# 2. Lancer le serveur de session vulnérable
+docker run -d --name poc_server session_server
 
-# Terminal 3 : Bob lance l'attaque complète
-./session_attacker
+# 3. Alice demande ses premiers jetons (setup)
+docker run --rm -v poc_tmp:/tmp --net=container:poc_server --entrypoint /session_victim session_attacker setup
+
+# 4. Lancer l'attaquant Bob pour exécuter l'attaque de session hijacking
+docker run --rm -v poc_tmp:/tmp --net=container:poc_server session_attacker
+
+# 5. Nettoyer les ressources
+docker rm -f poc_server
+docker volume rm poc_tmp
 ```
 
 Déroulement automatique de `session_attacker` :

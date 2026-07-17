@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sys/wait.h>
+#include <unistd.h>
 #include <vector>
 
 #include "core/mt19937.hpp"
