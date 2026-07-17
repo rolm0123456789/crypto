@@ -59,7 +59,7 @@ int main() {
         return EXIT_FAILURE;
     }
 
-    // Avec un LFSR Galois à décalage droit, les n premières sorties = les n bits de la graine.
+    // Avec un LFSR Fibonacci à décalage droit, les n premières sorties = les n bits de la graine.
     std::uint64_t recovered_initial_state = 0;
     for (unsigned int i = 0; i < DEGREE; ++i) {
         if (intercepted_bits[i]) {

@@ -39,7 +39,7 @@ namespace {
         }
 
         if (child == 0) {
-            execl(victim_binary.c_str(), victim_binary.c_str(), "login", nullptr);
+            execl(victim_binary.c_str(), victim_binary.c_str(), "login", static_cast<char*>(nullptr));
             _exit(EXIT_FAILURE);
         }
 
@@ -54,7 +54,7 @@ namespace {
         }
 
         if (child == 0) {
-            execl(victim_binary.c_str(), victim_binary.c_str(), "auth", nullptr);
+            execl(victim_binary.c_str(), victim_binary.c_str(), "auth", static_cast<char*>(nullptr));
             _exit(EXIT_FAILURE);
         }
 

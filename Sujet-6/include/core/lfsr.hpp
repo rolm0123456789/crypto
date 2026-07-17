@@ -7,7 +7,7 @@
  * @file lfsr.hpp
  * @brief Implémentation d'un LFSR (Linear Feedback Shift Register) sur GF(2).
  *
- * Architecture Galois à décalage droit :
+ * Architecture Fibonacci à décalage droit :
  *   - Le bit de sortie est le LSB de l'état courant.
  *   - Le bit de rétroaction est la parité (XOR) de (état & polynôme).
  *   - L'état est décalé vers la droite, le bit de rétroaction entre au MSB.
@@ -26,8 +26,8 @@ namespace CryptoCore {
 
     public:
         constexpr LFSR(std::uint64_t seed, std::uint64_t polynomial, unsigned int degree) noexcept
-            : m_state(seed & ((1ULL << degree) - 1)),
-              m_poly(polynomial & ((1ULL << degree) - 1)),
+            : m_state(seed & (degree == 64 ? ~0ULL : ((1ULL << degree) - 1))),
+              m_poly(polynomial & (degree == 64 ? ~0ULL : ((1ULL << degree) - 1))),
               m_initial_state(m_state),
               m_degree(degree) {}
 

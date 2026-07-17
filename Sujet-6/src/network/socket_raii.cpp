@@ -4,6 +4,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <cerrno>
 
 #include <utility>
 
@@ -104,7 +105,12 @@ namespace CryptoNetwork {
         // Boucle nécessaire car send() peut retourner un envoi partiel.
         while (bytes_left > 0) {
             ssize_t bytes_sent = ::send(m_fd, ptr, bytes_left, 0);
-            if (bytes_sent <= 0) {
+            if (bytes_sent < 0) {
+                if (errno == EINTR) {
+                    continue;
+                }
+                return false;
+            } else if (bytes_sent == 0) {
                 return false;
             }
             ptr += bytes_sent;
@@ -124,7 +130,12 @@ namespace CryptoNetwork {
         // Boucle nécessaire car recv() peut retourner une réception partielle.
         while (bytes_left > 0) {
             ssize_t bytes_received = ::recv(m_fd, ptr, bytes_left, 0);
-            if (bytes_received <= 0) {
+            if (bytes_received < 0) {
+                if (errno == EINTR) {
+                    continue;
+                }
+                return false;
+            } else if (bytes_received == 0) {
                 return false;
             }
             ptr += bytes_received;
